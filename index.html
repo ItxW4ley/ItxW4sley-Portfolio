@@ -324,17 +324,14 @@ async function fetchLanyard() {
         volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
 
         function startApp() {
-        const enter = document.getElementById('enter-screen');
-    enter.style.opacity = '0';
-
-    setTimeout(() => {
-        enter.style.display = 'none'; // 🔥 THIS FIXES IT
-        document.getElementById('main-content').classList.add('visible');
-        document.body.style.overflowY = 'auto';
-    }, 1000);
-
-    playNext();
-}
+            document.getElementById('enter-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('enter-screen').style.visibility = 'hidden';
+                document.getElementById('main-content').classList.add('visible');
+                document.body.style.overflowY = 'auto';
+            }, 1000);
+            playNext();
+        }
 
         function playNext() {
             audio.src = songs[currentSongIndex];
