@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wasley</title>
+    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/1097689875056164995/ca3897f02e6e5b010e9aad8bb8fbf9ea.webp?size=160">
+    <meta property="og:description" content="view =Wasley's portfolio, browse my work, order, view my availability — i love alysa liu">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <style>
+        :root {
+            --accent: #6272a4;
+            --glass: rgba(255, 182, 193, 0.03);
+            --border: rgba(255, 182, 193, 0.15);
+            --pink-glow: rgba(255, 182, 193, 0.1);
+            --online: #50fa7b;
+            --idle: #f1fa8c;
+            --dnd: #ff5555;
+            --offline: #6272a4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: none !important; }
+        body { background: #080808; color: #fff; min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; }
+        #enter-screen { position: fixed; inset: 0; background: #080808; z-index: 99999; display: flex; justify-content: center; align-items: center; transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .enter-content { text-align: center; animation: pulse-glow 2.5s infinite ease-in-out; }
+        .enter-text { font-size: 0.8rem; font-weight: 800; letter-spacing: 6px; color: #fff; text-transform: uppercase; text-shadow: 0 0 15px var(--accent); }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.5; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
+        #main-content { opacity: 0; transition: opacity 1.5s ease; width: 100%; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+        #main-content.visible { opacity: 1; pointer-events: auto; }
+        #cursor { width: 20px; height: 20px; background: rgba(19, 52, 120, 0.4); border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 20000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
+        #snow { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+        .discord-widget-container { width: 100%; max-width: 1100px; margin-bottom: 20px; z-index: 10; }
+        .discord-card { background: rgba(255, 182, 193, 0.05); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 24px; padding: 25px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--pink-glow); display: flex; align-items: center; gap: 20px; }
+        .discord-pfp-wrapper { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+        .discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--border); }
+        .discord-status-dot { position: absolute; bottom: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%; border: 4px solid #0c0c0c; background: var(--offline); }
+        .discord-info h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+        .discord-activity { font-size: 0.85rem; color: #aaa; line-height: 1.4; display: flex; align-items: center; }
+        .bento-grid { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto; gap: 20px; max-width: 1100px; width: 100%; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 24px; padding: 30px; display: flex; flex-direction: column; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: inset 0 0 15px rgba(255, 182, 193, 0.02); }
+        .card:hover, .discord-card:hover { border-color: var(--accent); background: rgba(255, 182, 193, 0.08); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255, 182, 193, 0.1); }
+        .profile { grid-column: span 2; grid-row: span 1; } .stack { grid-column: span 2; } .links { grid-column: span 1; } .status { grid-column: span 1; display: flex; flex-direction: column; justify-content: space-between; } .projects { grid-column: span 2; } .philosophy { grid-column: span 2; } .portfolio-card { grid-column: span 2; cursor: pointer !important; }
+        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tagline { color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 3px; font-weight: 700; margin-bottom: 10px; }
+        .bio { font-size: 0.95rem; line-height: 1.6; color: #aaa; margin-top: 15px; }
+        .tech-pill { display: inline-block; padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; font-size: 0.75rem; margin: 4px; color: #efefef; }
+        .link-item { display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.03); margin-bottom: 10px; font-size: 0.85rem; transition: 0.3s; }
+        .link-item:hover { background: var(--accent); color: #000; }
+        .status-container { display: flex; align-items: center; justify-content: center; padding: 15px; background: rgba(80, 250, 123, 0.05); border: 1px solid rgba(80, 250, 123, 0.2); border-radius: 15px; margin-top: auto; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(80, 250, 123, 0.2); } 70% { box-shadow: 0 0 0 10px rgba(80, 250, 123, 0); } 100% { box-shadow: 0 0 0 0px rgba(80, 250, 123, 0); } }
+        .status-dot { width: 8px; height: 8px; background: #50fa7b; border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 10px #50fa7b; }
+        .status-text { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: #50fa7b; text-transform: uppercase; }
+        .volume-container { width: 100%; max-width: 1100px; margin-top: 30px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; }
+        .volume-slider { -webkit-appearance: none; width: 250px; height: 3px; background: rgba(255, 182, 193, 0.15); border-radius: 5px; outline: none; transition: 0.3s; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: none; box-shadow: 0 0 15px var(--accent); border: 2px solid #080808; }
+        .volume-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 4px; color: var(--accent); font-weight: 800; opacity: 0.8; }
+        #portfolio-overlay { position: fixed; inset: 0; background: #080808; z-index: 10000; display: none; opacity: 0; overflow-y: auto; padding: 60px 20px; transition: opacity 0.8s ease; }
+        .portfolio-content { max-width: 1200px; margin: 0 auto; }
+        .portfolio-section { margin-bottom: 80px; opacity: 0; transform: translateY(30px); transition: 1s ease; }
+        .portfolio-section.visible { opacity: 1; transform: translateY(0); }
+        .section-title { font-size: 1.5rem; color: var(--accent); margin-bottom: 30px; border-left: 4px solid var(--accent); padding-left: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .portfolio-img { width: 100%; border-radius: 15px; border: 1px solid var(--border); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer !important; }
+        .portfolio-img:hover { border-color: var(--accent); transform: scale(1.02); }
+        .close-portfolio { position: fixed; top: 30px; right: 30px; background: var(--accent); color: #000; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 800; z-index: 10001; cursor: pointer !important; }
+        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 30000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; }
+        #lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; box-shadow: 0 0 50px rgba(255, 182, 193, 0.2); transform: scale(0.8); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @media (max-width: 900px) { .bento-grid { grid-template-columns: 1fr; } .card { grid-column: span 1 !important; } body { overflow-y: auto; } }
+    </style>
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body oncontextmenu="return false;">
+
+    <div id="enter-screen" onclick="startApp()">
+        <div class="enter-content">
+            <div class="enter-text">Click to enter</div>
+        </div>
+    </div>
+
+    <div id="cursor"></div>
+    <canvas id="snow"></canvas>
+
+    <div id="main-content">
+        <div class="discord-widget-container">
+            <div class="discord-card" data-tilt>
+                <div class="discord-pfp-wrapper">
+                    <img id="discord-pfp" src="" class="discord-pfp" alt="Discord Avatar">
+                    <div id="discord-status" class="discord-status-dot"></div>
+                </div>
+                <div class="discord-info">
+                    <div class="tagline" id="live-tag">Live Status</div>
+                    <h2 id="discord-name">Loading...</h2>
+                    <p id="discord-activity" class="discord-activity">Connecting to Discord...</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="bento-grid">
+            <div class="card profile" data-tilt>
+                <div class="tagline">Developer & Designer</div>
+                <h1>ItxW4sley</h1>
+                <p class="bio">
+                    Designer, developer, and entrepreneur crafting digital experiences with a focus on aesthetics and efficiency. Currently building private workspaces and interactive web solutions. Year 11 Student
+                </p>
+            </div>
+
+            <div class="card stack" data-tilt>
+                <div class="tagline">Softwares Used</div>
+                <div style="margin-top: 15px;">
+                    <span class="tech-pill">After Effects</span>
+                    <span class="tech-pill">Affinity</span>
+                    <span class="tech-pill">Blender</span>
+                    <span class="tech-pill">Canva</span>
+                    <span class="tech-pill">CSS3</span>
+                    <span class="tech-pill">Figma</span>
+                    <span class="tech-pill">Github</span>
+                    <span class="tech-pill">HTML5</span>
+                    <span class="tech-pill">Illustrator</span>
+                    <span class="tech-pill">JavaScript</span>
+                    <span class="tech-pill">MongoDB</span>
+                    <span class="tech-pill">Netlify</span>
+                    <span class="tech-pill">Node.js</span>
+                    <span class="tech-pill">Photopea</span>
+                    <span class="tech-pill">Photoshop</span>
+                    <span class="tech-pill">Postman</span>
+                    <span class="tech-pill">Premiere Pro</span>
+                    <span class="tech-pill">Python</span>
+                    <span class="tech-pill">React</span>
+                    <span class="tech-pill">Spotify</span>
+                    <span class="tech-pill">Vercel</span>
+                    <span class="tech-pill">Visual Studio Code</span>
+                </div>
+            </div>
+
+            <div class="card links" data-tilt>
+                <div class="tagline">Connect</div>
+                <div style="margin-top: 15px;">
+                    <a href="https://discord.gg/ntT6dETHN5" class="link-item">Techura <span>→</span></a>
+                    <a href="https://discord.com/users/1097689875056164995" class="link-item">Discord <span>→</span></a>
+                </div>
+            </div>
+
+            <div class="card status" data-tilt>
+                <div class="tagline">Work Status</div>
+                <div class="status-container">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Available for projects</span>
+                </div>
+            </div>
+
+            <div class="card projects" data-tilt>
+                <div class="tagline">Recent Proajects</div>
+                <h2 style="margin-top: 10px; font-size: 1.2rem;">techurasolutions.xyz</h2>
+                <p class="bio" style="font-size: 0.8rem;"><strong>Techura Solutions Pty Ltd</strong>  is a global leader in cloud, IT, and enterprise infrastructure solutions, delivering innovative technology and operational excellence to empower businesses worldwide. With a presence in Perth, Sydney, Dubai, Japan, United States , Singapore and Thailand, we provide seamless support, scalable infrastructure, and secure digital transformation services.</p>
+            </div>
+
+            <div class="card philosophy" data-tilt>
+                <div class="tagline">Mindset</div>
+                <p class="bio" style="font-size: 0.8rem; color: var(--accent);">
+                    "Design is how it looks. Code is how it works. The real magic is knowing both."
+                </p>
+            </div>
+
+            <div class="card portfolio-card" data-tilt onclick="openPortfolio()">
+                <div class="tagline">Works</div>
+                <h2 style="font-size: 1.8rem; font-weight: 800; color: #fff;">PORTFOLIO</h2>
+                <p class="bio" style="font-size: 0.85rem;">View the work of dubaaai, in various fields.</p>
+            </div>
+        </main>
+
+    <div id="portfolio-overlay">
+        <button class="close-portfolio" onclick="closePortfolio()">BACK</button>
+        <div class="portfolio-content" id="portfolio-container"></div>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Enlarged">
+    </div>
+
+    <script>
+        const DISCORD_ID = "1097689875056164995";
+        const titleText = "ItxW4sley";
+        let titleIndex = 0;
+        let isTitleAdding = true;
+
+        function animateTitle() {
+            const characters = Array.from(titleText);
+            let current = "";
+            
+            if (isTitleAdding) {
+                if (titleIndex < characters.length) {
+                    current = characters.slice(0, titleIndex + 1).join('');
+                    titleIndex++;
+                } else {
+                    current = titleText;
+                    isTitleAdding = false;
+                }
+            } else {
+                titleIndex--;
+                if (titleIndex > 0) {
+                    current = characters.slice(0, titleIndex).join('');
+                } else {
+                    current = "Itxw4sley";
+                    isTitleAdding = true;
+                    titleIndex = 1;
+                }
+            }
+            
+            document.title = current || "wasley";
+        }
+
+        setInterval(animateTitle, 500);
+async function fetchLanyard() {
+    try {
+        const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+        const data = await response.json();
+
+        if (!data.success) return;
+
+        const user = data.data.discord_user;
+        const lanyardData = data.data;
+
+        // --- Avatar Fallback ---
+        const avatarUrl = user.avatar 
+            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=160`
+            : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`;
+        document.getElementById('discord-pfp').src = avatarUrl;
+
+        // --- Username Display ---
+        document.getElementById('discord-name').innerText = user.global_name || user.username;
+
+        // --- Status Dot ---
+        const statusDot = document.getElementById('discord-status');
+        const status = lanyardData.discord_status || 'offline';
+        const statusColors = {
+            online: '#43b581',
+            idle: '#faa61a',
+            dnd: '#f04747',
+            offline: '#747f8d'
+        };
+
+        statusDot.style.background = statusColors[status] || statusColors['offline'];
+        statusDot.style.boxShadow = status !== 'offline' ? `0 0 10px ${statusColors[status]}` : 'none';
+
+        // --- Activity Display ---
+        const liveTag = document.getElementById('live-tag');
+        const activityDisplay = document.getElementById('discord-activity');
+
+        // Spotify
+        if (lanyardData.listening_to_spotify) {
+            activityDisplay.innerText = `Listening to ${lanyardData.spotify.song} by ${lanyardData.spotify.artist}`;
+            liveTag.innerText = "Listening to Spotify";
+
+        // Custom / Game Activities
+        } else if (lanyardData.activities && lanyardData.activities.length > 0) {
+            const custom = lanyardData.activities.find(a => a.type === 4);
+            const game = lanyardData.activities.find(a => a.type === 0);
+
+            if (custom) {
+                let emojiHtml = "";
+                if (custom.emoji) {
+                    if (custom.emoji.id) {
+                        const ext = custom.emoji.animated ? 'gif' : 'png';
+                        emojiHtml = `<img src="https://cdn.discordapp.com/emojis/${custom.emoji.id}.${ext}" style="width: 1.2rem; height: 1.2rem; margin-right: 5px;">`;
+                    } else {
+                        emojiHtml = `<span style="margin-right: 5px;">${custom.emoji.name}</span>`;
+                    }
+                }
+                activityDisplay.innerHTML = `${emojiHtml} ${custom.state || ""}`;
+                liveTag.innerText = "Discord Presence";
+
+            } else if (game) {
+                activityDisplay.innerText = `Playing ${game.name}`;
+                liveTag.innerText = "Currently Playing";
+
+            } else {
+                activityDisplay.innerText = "Chilling...";
+                liveTag.innerText = "Live Status";
+            }
+
+        // Default offline / no activity
+        } else {
+            activityDisplay.innerText = "Chilling...";
+            liveTag.innerText = "Live Status";
+        }
+
+    } catch (error) {
+        console.error("Lanyard fetch error:", error);
+
+        // Fallback if API fails
+        document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/embed/avatars/0.png`;
+        document.getElementById('discord-name').innerText = "Unknown User";
+        document.getElementById('discord-status').style.background = '#747f8d';
+        document.getElementById('discord-status').style.boxShadow = 'none';
+        document.getElementById('discord-activity').innerText = "Offline";
+        document.getElementById('live-tag').innerText = "Live Status";
+    }
+}
+        setInterval(fetchLanyard, 15000);
+        fetchLanyard();
+
+        const crsr = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            crsr.style.left = e.clientX + 'px';
+            crsr.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => crsr.style.transform = 'translate(-50%, -50%) scale(0.8)');
+        document.addEventListener('mouseup', () => crsr.style.transform = 'translate(-50%, -50%) scale(1)');
+
+        const songs = [
+            "https://dworkspace.vercel.app/assets/saturn.mp3",
+
+        ];
+        
+        const audio = document.getElementById('bg-music');
+        const volumeSlider = document.getElementById('volume-control');
+        let currentSongIndex = Math.floor(Math.random() * songs.length);
+
+        audio.volume = 0.5;
+        volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
+
+        function startApp() {
+            document.getElementById('enter-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('enter-screen').style.visibility = 'hidden';
+                document.getElementById('main-content').classList.add('visible');
+                document.body.style.overflowY = 'auto';
+            }, 1000);
+            playNext();
+        }
+
+        function playNext() {
+            audio.src = songs[currentSongIndex];
+            audio.play().catch(() => {});
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+        }
+
+        audio.addEventListener('ended', playNext);
+
+        const canvas = document.getElementById('snow');
+        const ctx = canvas.getContext('2d');
+        let flakes = [];
+
+        function initSnow() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            flakes = Array.from({length: 80}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                s: Math.random() * 2 + 1,
+                v: Math.random() * 1 + 0.5
+            }));
+        }
+
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 182, 193, 0.3)";
+            flakes.forEach(f => {
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.s, 0, Math.PI * 2);
+                ctx.fill();
+                f.y += f.v;
+                if (f.y > canvas.height) f.y = -5;
+            });
+            requestAnimationFrame(drawSnow);
+        }
+
+        // const workData = {
+        //     "Banners": ["dubaibanner1", "dubaibanner2", "dubaibanner3", "dubaibanner4", "dubaibanner5", "dubaibanner6", "dubaibanner7", "dubaibanner8", "dubaibanner9", "dubaibanner10", "dubaibanner11", "dubaibanner12", "dubaibanner13", "dubaibanner14", "dubaibanner15", "dubaibanner16", "dubaibanner17", "dubaibanner18", "dubaibanner19", "dubaibanner20", "dubaibanner21", "dubaibanner22", "dubaibanner23", "dubaibanner24", "dubaibanner25", "dubaibanner26", "dubaibanner27", "dubaibanner28", "dubaibanner29", "dubaibanner30"],
+        //     "Generic Banners": ["dubaigeneric1", "dubaigeneric2", "dubaigeneric3", "dubaigeneric4", "dubaigeneric5", "dubaigeneric6", "dubaigeneric7", "dubaigeneric8", "dubaigeneric9", "dubaigeneric10"],
+        //     "Logos": ["dubailogo1", "dubailogo2", "dubailogo3", "dubailogo4", "dubailogo5", "dubailogo6"],
+        //     "Posters": ["dubaiposter1", "dubaiposter2", "dubaiposter3", "dubaiposter4", "dubaiposter5", "dubaiposter6", "dubaiposter7", "dubaiposter8", "dubaiposter9", "dubaiposter10", "dubaiposter11"],
+        //     "Clothing": ["dubaiclothing1", "dubaiclothing2", "dubaiclothing3", "dubaiclothing4", "dubaiclothing5", "dubaiclothing6", "dubaiclothing7", "dubaiclothing8", "dubaiclothing9"],
+        //     "Liveries": ["dubailiv1", "dubailiv2", "dubailiv3", "dubailiv4", "dubailiv5", "dubailiv6", "dubailiv7"],
+        //     "Photography": ["dubaiphoto1", "dubaiphoto2", "dubaiphoto3", "dubaiphoto4", "dubaiphoto5", "dubaiphoto6"]
+        // };
+
+        function openPortfolio() {
+            const overlay = document.getElementById('portfolio-overlay');
+            const container = document.getElementById('portfolio-container');
+            container.innerHTML = '';
+            Object.keys(workData).forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'portfolio-section';
+                section.innerHTML = `
+                    <h3 class="section-title">${category}</h3>
+                    <div class="image-grid">
+                        ${workData[category].map(img => `<img src="assets/${img}.png" class="portfolio-img" onclick="openLightbox(this.src)" alt="${img}">`).join('')}
+                    </div>
+                `;
+                container.appendChild(section);
+            });
+            overlay.style.display = 'block';
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+                document.querySelectorAll('.portfolio-section').forEach((s, i) => {
+                    setTimeout(() => s.classList.add('visible'), i * 200);
+                });
+            }, 50);
+        }
+
+        function closePortfolio() {
+            const overlay = document.getElementById('portfolio-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 800);
+        }
+
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const lbImg = document.getElementById('lightbox-img');
+            lbImg.src = src;
+            lb.style.display = 'flex';
+            setTimeout(() => { lb.style.opacity = '1'; lbImg.style.transform = 'scale(1)'; }, 50);
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            const lbImg = document.getElementById('lightbox-img');
+            lb.style.opacity = '0';
+            lbImg.style.transform = 'scale(0.8)';
+            setTimeout(() => { lb.style.display = 'none'; }, 500);
+        }
+
+        window.addEventListener('resize', initSnow);
+        initSnow();
+        drawSnow();
+
+        VanillaTilt.init(document.querySelectorAll(".card, .discord-card"), {
+            max: 5,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.3,
+        });
+    </script>
+    <script src="softwareUsed.js"></script>
+    <script src="mindset.js"></script>
+    <script src="contactbutton.js"></script>
+    <script src="musicplayer.js"></script>
+</body>
+</html>
