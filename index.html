@@ -171,6 +171,16 @@
             </div>
         </main>
 
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Enlarged">
+    </div>
+    
+        <div class="volume-container">
+            <span class="volume-label">Configure Volume</span>
+            <input type="range" class="volume-slider" id="volume-control" min="0" max="1" step="0.01" value="0.5">
+        </div>
+    </div>
+
     <div id="portfolio-overlay">
         <button class="close-portfolio" onclick="closePortfolio()">BACK</button>
         <div class="portfolio-content" id="portfolio-container"></div>
@@ -179,6 +189,8 @@
     <div id="lightbox" onclick="closeLightbox()">
         <img id="lightbox-img" src="" alt="Enlarged">
     </div>
+
+    <audio id="bg-music" loop></audio>
 
     <script>
         const DISCORD_ID = "1097689875056164995";
