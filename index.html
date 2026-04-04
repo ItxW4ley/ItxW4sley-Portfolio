@@ -325,9 +325,9 @@ async function fetchLanyard() {
 
         function startApp() {
         const enter = document.getElementById('enter-screen');
-        enter.style.opacity = '0';
+    enter.style.opacity = '0';
 
-        setTimeout(() => {
+    setTimeout(() => {
         enter.style.display = 'none'; // 🔥 THIS FIXES IT
         document.getElementById('main-content').classList.add('visible');
         document.body.style.overflowY = 'auto';
@@ -379,7 +379,7 @@ async function fetchLanyard() {
              "Posters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
         };
 
-        function openPortfolio() {
+              function openPortfolio() {
             const overlay = document.getElementById('portfolio-overlay');
             const container = document.getElementById('portfolio-container');
             container.innerHTML = '';
