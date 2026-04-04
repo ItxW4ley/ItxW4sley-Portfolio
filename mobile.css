@@ -1,0 +1,112 @@
+@media (max-width: 900px) {
+    * {
+        cursor: auto !important;
+    }
+
+    #cursor {
+        display: none !important;
+    }
+
+    body {
+        padding: 20px 15px;
+        overflow-y: auto !important;
+        display: block;
+    }
+
+    .bento-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-bottom: 140px;
+    }
+
+    .card, .discord-card {
+        grid-column: span 1 !important;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .discord-widget-container {
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .tagline {
+        text-align: center;
+        font-size: 0.6rem;
+    }
+
+    .bio {
+        text-align: center;
+        font-size: 0.85rem;
+    }
+
+    .discord-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .discord-pfp-wrapper {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+    }
+
+    .tech-pill {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+    }
+
+    .music-player-widget {
+        width: calc(100% - 30px) !important;
+        left: 15px !important;
+        right: 15px !important;
+        bottom: 15px !important;
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .album-art-container {
+        width: 55px;
+        height: 55px;
+    }
+
+    .song-name {
+        font-size: 0.8rem;
+    }
+
+    .artist-name {
+        font-size: 0.7rem;
+    }
+
+    .image-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .close-portfolio {
+        top: 15px;
+        right: 15px;
+        padding: 8px 16px;
+        font-size: 0.7rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .volume-container {
+        margin-top: 20px;
+        padding: 10px;
+    }
+
+    .volume-slider {
+        width: 100%;
+    }
+}
