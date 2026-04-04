@@ -347,39 +347,38 @@
             });
             requestAnimationFrame(drawSnow);
         }
+// 1️⃣ Declare workData first
+var workData = {
+    "Banners": ["banner1","dubaibanner2","dubaibanner3"],
+    "Generic Banners": ["dubaigeneric1","dubaigeneric2"],
+    "Logos": ["dubailogo1","dubailogo2"],
+    "Posters": ["dubaiposter1","dubaiposter2"]
+};
 
-        const workData = {
-            "Banners": ["dubaibanner1", "dubaibanner2", "dubaibanner3", "dubaibanner4", "dubaibanner5", "dubaibanner6", "dubaibanner7", "dubaibanner8", "dubaibanner9", "dubaibanner10", "dubaibanner11", "dubaibanner12", "dubaibanner13", "dubaibanner14", "dubaibanner15", "dubaibanner16", "dubaibanner17", "dubaibanner18", "dubaibanner19", "dubaibanner20", "dubaibanner21", "dubaibanner22", "dubaibanner23", "dubaibanner24", "dubaibanner25", "dubaibanner26", "dubaibanner27", "dubaibanner28", "dubaibanner29", "dubaibanner30"],
-            "Generic Banners": ["dubaigeneric1", "dubaigeneric2", "dubaigeneric3", "dubaigeneric4", "dubaigeneric5", "dubaigeneric6", "dubaigeneric7", "dubaigeneric8", "dubaigeneric9", "dubaigeneric10"],
-            "Logos": ["dubailogo1", "dubailogo2", "dubailogo3", "dubailogo4", "dubailogo5", "dubailogo6"],
-            "Posters": ["dubaiposter1", "dubaiposter2", "dubaiposter3", "dubaiposter4", "dubaiposter5", "dubaiposter6", "dubaiposter7", "dubaiposter8", "dubaiposter9", "dubaiposter10", "dubaiposter11"],
-           
-        };
-
-        function openPortfolio() {
-            const overlay = document.getElementById('portfolio-overlay');
-            const container = document.getElementById('portfolio-container');
-            container.innerHTML = '';
-            Object.keys(workData).forEach(category => {
-                const section = document.createElement('div');
-                section.className = 'portfolio-section';
-                section.innerHTML = `
-                    <h3 class="section-title">${category}</h3>
-                    <div class="image-grid">
-                        ${workData[category].map(img => `<img src="assets/${img}.png" class="portfolio-img" onclick="openLightbox(this.src)" alt="${img}">`).join('')}
-                    </div>
-                `;
-                container.appendChild(section);
-            });
-            overlay.style.display = 'block';
-            setTimeout(() => {
-                overlay.style.opacity = '1';
-                document.querySelectorAll('.portfolio-section').forEach((s, i) => {
-                    setTimeout(() => s.classList.add('visible'), i * 200);
-                });
-            }, 50);
-        }
-
+// 2️⃣ Then the function
+function openPortfolio() {
+    const overlay = document.getElementById('portfolio-overlay');
+    const container = document.getElementById('portfolio-container');
+    container.innerHTML = '';
+    Object.keys(workData).forEach(category => {
+        const section = document.createElement('div');
+        section.className = 'portfolio-section';
+        section.innerHTML = `
+            <h3 class="section-title">${category}</h3>
+            <div class="image-grid">
+                ${workData[category].map(img => `<img src="assets/${img}.png" class="portfolio-img" onclick="openLightbox(this.src)" alt="${img}">`).join('')}
+            </div>
+        `;
+        container.appendChild(section);
+    });
+    overlay.style.display = 'block';
+    setTimeout(() => {
+        overlay.style.opacity = '1';
+        document.querySelectorAll('.portfolio-section').forEach((s, i) => {
+            setTimeout(() => s.classList.add('visible'), i * 200);
+        });
+    }, 50);
+}
         function closePortfolio() {
             const overlay = document.getElementById('portfolio-overlay');
             overlay.style.opacity = '0';
