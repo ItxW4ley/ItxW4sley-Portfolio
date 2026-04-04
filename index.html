@@ -164,13 +164,17 @@
                 </p>
             </div>
 
-      <div class="card portfolio-card" data-tilt onclick="openPortfolio()">
+            <div class="card portfolio-card" data-tilt onclick="openPortfolio()">
                 <div class="tagline">Works</div>
                 <h2 style="font-size: 1.8rem; font-weight: 800; color: #fff;">PORTFOLIO</h2>
-                <p class="bio" style="font-size: 0.85rem;">View the work of dubaaai, in various fields.</p>
+                <p class="bio" style="font-size: 0.85rem;">View the work of Wasley, in various fields.</p>
             </div>
         </main>
 
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Enlarged">
+    </div>
+    
         <div class="volume-container">
             <span class="volume-label">Configure Volume</span>
             <input type="range" class="volume-slider" id="volume-control" min="0" max="1" step="0.01" value="0.5">
@@ -189,8 +193,8 @@
     <audio id="bg-music" loop></audio>
 
     <script>
-        const DISCORD_ID = "780580976500670494";
-        const titleText = "dubaaai 🥂";
+        const DISCORD_ID = "1097689875056164995";
+        const titleText = "ItxW4sley";
         let titleIndex = 0;
         let isTitleAdding = true;
 
@@ -211,16 +215,16 @@
                 if (titleIndex > 0) {
                     current = characters.slice(0, titleIndex).join('');
                 } else {
-                    current = "d";
+                    current = "Itxw4sley";
                     isTitleAdding = true;
                     titleIndex = 1;
                 }
             }
             
-            document.title = current || "d";
+            document.title = current || "wasley";
         }
 
-        setInterval(animateTitle, 500);
+          setInterval(animateTitle, 500);
 
         async function fetchLanyard() {
             try {
@@ -292,7 +296,62 @@
         document.addEventListener('mouseup', () => crsr.style.transform = 'translate(-50%, -50%) scale(1)');
 
         const songs = [
-            "https://dworkspace.vercel.app/assets/saturn.mp3"
+            "https://dworkspace.vercel.app/assets/feelnoways.mp3", 
+            "https://dworkspace.vercel.app/assets/highjack.mp3",
+            "https://dworkspace.vercel.app/assets/notyoutoo.mp3",
+            "https://dworkspace.vercel.app/assets/disillusioned.mp3",
+            "https://dworkspace.vercel.app/assets/skeletons.mp3",
+            "https://dworkspace.vercel.app/assets/fellinluv.mp3",
+            "https://dworkspace.vercel.app/assets/lamour.mp3",
+            "https://dworkspace.vercel.app/assets/headlines.mp3",
+            "https://dworkspace.vercel.app/assets/riplucki.mp3",
+            "https://dworkspace.vercel.app/assets/ninedrake.mp3",
+            "https://dworkspace.vercel.app/assets/sandman.mp3",
+            "https://dworkspace.vercel.app/assets/tsudrake.mp3",
+            "https://dworkspace.vercel.app/assets/youruineverything.mp3",
+            "https://dworkspace.vercel.app/assets/dreamsfairytalesfantasies.mp3",
+            "https://dworkspace.vercel.app/assets/rosary.mp3",
+            "https://dworkspace.vercel.app/assets/tuition.mp3",
+            "https://dworkspace.vercel.app/assets/tmudon.mp3",
+            "https://dworkspace.vercel.app/assets/kninedon.mp3",
+            "https://dworkspace.vercel.app/assets/nopole.mp3",
+            "https://dworkspace.vercel.app/assets/location.mp3",
+            "https://dworkspace.vercel.app/assets/burn.mp3",
+            "https://dworkspace.vercel.app/assets/wusyaname.mp3",
+            "https://dworkspace.vercel.app/assets/shetyler.mp3",
+            "https://dworkspace.vercel.app/assets/pinkwhite.mp3",
+            "https://dworkspace.vercel.app/assets/snooze.mp3",
+            "https://dworkspace.vercel.app/assets/openarms.mp3",
+            "https://dworkspace.vercel.app/assets/saturn.mp3",
+            "https://dworkspace.vercel.app/assets/theresistance.mp3",
+            "https://dworkspace.vercel.app/assets/passionfruit.mp3",
+            "https://dworkspace.vercel.app/assets/olympian.mp3",
+            "https://dworkspace.vercel.app/assets/fromthestart.mp3",
+            "https://dworkspace.vercel.app/assets/gluesong.mp3",
+            "https://dworkspace.vercel.app/assets/acoldsunday.mp3",
+            "https://dworkspace.vercel.app/assets/oneofthosedays.mp3",
+            "https://dworkspace.vercel.app/assets/lvlasap.mp3",
+            "https://dworkspace.vercel.app/assets/niceforwhat.mp3",
+            "https://dworkspace.vercel.app/assets/catchakill.mp3",
+            "https://dworkspace.vercel.app/assets/iflookscouldkill.mp3",
+            "https://dworkspace.vercel.app/assets/telekinesis.mp3",
+            "https://dworkspace.vercel.app/assets/soeasytofallinlove.mp3",
+            "https://dworkspace.vercel.app/assets/rose.mp3",
+            "https://dworkspace.vercel.app/assets/thesilencebeneathmyskin.mp3",
+            "https://dworkspace.vercel.app/assets/throwit.mp3",
+            "https://dworkspace.vercel.app/assets/foreign.mp3",
+            "https://dworkspace.vercel.app/assets/solosteppincreteboy.mp3",
+            "https://dworkspace.vercel.app/assets/drewbarrymore.mp3",
+            "https://dworkspace.vercel.app/assets/nopeyourtoolateialreadydied.mp3",
+            "https://dworkspace.vercel.app/assets/wokeuplikethis.mp3",
+            "https://dworkspace.vercel.app/assets/shakeback.mp3",
+            "https://dworkspace.vercel.app/assets/pain.mp3",
+            "https://dworkspace.vercel.app/assets/2000excursion.mp3",
+            "https://dworkspace.vercel.app/assets/getnaked.mp3",
+            "https://dworkspace.vercel.app/assets/holymatrimony.mp3",
+            "https://dworkspace.vercel.app/assets/bipolar.mp3",
+            "https://dworkspace.vercel.app/assets/ikyourwaiting.mp3"
+
         ];
         
         const audio = document.getElementById('bg-music');
