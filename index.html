@@ -30,8 +30,8 @@
         @keyframes pulse-glow { 0%, 100% { opacity: 0.5; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
         #main-content { opacity: 0; transition: opacity 1.5s ease; width: 100%; display: flex; flex-direction: column; align-items: center; pointer-events: auto; }
         #main-content.visible { opacity: 1; pointer-events: auto; }
-        #cursor { width: 20px; height: 20px; background: rgba(19, 52, 120, 0.4); border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 20000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
-        #snow { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+        #cursor { width: 20px; height: 20px; background: rgba(19, 52, 120, 0.4); border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: auto; z-index: 20000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
+        #snow { position: fixed; inset: 0; pointer-events: auto; z-index: 1; }
         .discord-widget-container { width: 100%; max-width: 1100px; margin-bottom: 20px; z-index: 10; }
         .discord-card { background: rgba(255, 182, 193, 0.05); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 24px; padding: 25px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--pink-glow); display: flex; align-items: center; gap: 20px; }
         .discord-pfp-wrapper { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
