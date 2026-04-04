@@ -224,65 +224,93 @@
             document.title = current || "wasley";
         }
 
-          setInterval(animateTitle, 500);
+        setInterval(animateTitle, 500);
+async function fetchLanyard() {
+    try {
+        const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+        const data = await response.json();
 
-        async function fetchLanyard() {
-            try {
-                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    const user = data.data;
-                    const pfp = user.discord_user.avatar;
-                    document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${pfp}.webp?size=160`;
-                    document.getElementById('discord-name').innerText = user.discord_user.global_name || user.discord_user.username;
-                    
-                    const statusDot = document.getElementById('discord-status');
-                    const status = user.discord_status;
-                    statusDot.style.background = `var(--${status})`;
-                    if(status !== 'offline') {
-                        statusDot.style.boxShadow = `0 0 10px var(--${status})`;
+        if (!data.success) return;
+
+        const user = data.data.discord_user;
+        const lanyardData = data.data;
+
+        // --- Avatar Fallback ---
+        const avatarUrl = user.avatar 
+            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=160`
+            : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`;
+        document.getElementById('discord-pfp').src = avatarUrl;
+
+        // --- Username Display ---
+        document.getElementById('discord-name').innerText = user.global_name || user.username;
+
+        // --- Status Dot ---
+        const statusDot = document.getElementById('discord-status');
+        const status = lanyardData.discord_status || 'offline';
+        const statusColors = {
+            online: '#43b581',
+            idle: '#faa61a',
+            dnd: '#f04747',
+            offline: '#747f8d'
+        };
+
+        statusDot.style.background = statusColors[status] || statusColors['offline'];
+        statusDot.style.boxShadow = status !== 'offline' ? `0 0 10px ${statusColors[status]}` : 'none';
+
+        // --- Activity Display ---
+        const liveTag = document.getElementById('live-tag');
+        const activityDisplay = document.getElementById('discord-activity');
+
+        // Spotify
+        if (lanyardData.listening_to_spotify) {
+            activityDisplay.innerText = `Listening to ${lanyardData.spotify.song} by ${lanyardData.spotify.artist}`;
+            liveTag.innerText = "Listening to Spotify";
+
+        // Custom / Game Activities
+        } else if (lanyardData.activities && lanyardData.activities.length > 0) {
+            const custom = lanyardData.activities.find(a => a.type === 4);
+            const game = lanyardData.activities.find(a => a.type === 0);
+
+            if (custom) {
+                let emojiHtml = "";
+                if (custom.emoji) {
+                    if (custom.emoji.id) {
+                        const ext = custom.emoji.animated ? 'gif' : 'png';
+                        emojiHtml = `<img src="https://cdn.discordapp.com/emojis/${custom.emoji.id}.${ext}" style="width: 1.2rem; height: 1.2rem; margin-right: 5px;">`;
                     } else {
-                        statusDot.style.boxShadow = `none`;
-                    }
-
-                    const liveTag = document.getElementById('live-tag');
-                    const activityDisplay = document.getElementById('discord-activity');
-
-                    if (user.listening_to_spotify) {
-                        activityDisplay.innerText = `Listening to ${user.spotify.song} by ${user.spotify.artist}`;
-                        liveTag.innerText = "Listening to Spotify";
-                    } else if (user.activities && user.activities.length > 0) {
-                        const custom = user.activities.find(a => a.type === 4);
-                        const game = user.activities.find(a => a.type === 0);
-
-                        if (custom) {
-                            let emojiHtml = "";
-                            if (custom.emoji) {
-                                if (custom.emoji.id) {
-                                    const ext = custom.emoji.animated ? 'gif' : 'png';
-                                    emojiHtml = `<img src="https://cdn.discordapp.com/emojis/${custom.emoji.id}.${ext}" style="width: 1.2rem; height: 1.2rem; margin-right: 5px;">`;
-                                } else {
-                                    emojiHtml = `<span style="margin-right: 5px;">${custom.emoji.name}</span>`;
-                                }
-                            }
-                            const statusMsg = custom.state || "";
-                            activityDisplay.innerHTML = `${emojiHtml} ${statusMsg}`;
-                            liveTag.innerText = "Discord Presence";
-                        } else if (game) {
-                            activityDisplay.innerText = `Playing ${game.name}`;
-                            liveTag.innerText = "Currently Playing";
-                        }
-                    } else {
-                        activityDisplay.innerText = "Chilling...";
-                        liveTag.innerText = "Live Status";
+                        emojiHtml = `<span style="margin-right: 5px;">${custom.emoji.name}</span>`;
                     }
                 }
-            } catch (error) {
-                console.error("Lanyard error:", error);
+                activityDisplay.innerHTML = `${emojiHtml} ${custom.state || ""}`;
+                liveTag.innerText = "Discord Presence";
+
+            } else if (game) {
+                activityDisplay.innerText = `Playing ${game.name}`;
+                liveTag.innerText = "Currently Playing";
+
+            } else {
+                activityDisplay.innerText = "Chilling...";
+                liveTag.innerText = "Live Status";
             }
+
+        // Default offline / no activity
+        } else {
+            activityDisplay.innerText = "Chilling...";
+            liveTag.innerText = "Live Status";
         }
 
+    } catch (error) {
+        console.error("Lanyard fetch error:", error);
+
+        // Fallback if API fails
+        document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/embed/avatars/0.png`;
+        document.getElementById('discord-name').innerText = "Unknown User";
+        document.getElementById('discord-status').style.background = '#747f8d';
+        document.getElementById('discord-status').style.boxShadow = 'none';
+        document.getElementById('discord-activity').innerText = "Offline";
+        document.getElementById('live-tag').innerText = "Live Status";
+    }
+}
         setInterval(fetchLanyard, 15000);
         fetchLanyard();
 
@@ -296,65 +324,10 @@
         document.addEventListener('mouseup', () => crsr.style.transform = 'translate(-50%, -50%) scale(1)');
 
         const songs = [
-            "https://dworkspace.vercel.app/assets/feelnoways.mp3", 
-            "https://dworkspace.vercel.app/assets/highjack.mp3",
-            "https://dworkspace.vercel.app/assets/notyoutoo.mp3",
-            "https://dworkspace.vercel.app/assets/disillusioned.mp3",
-            "https://dworkspace.vercel.app/assets/skeletons.mp3",
-            "https://dworkspace.vercel.app/assets/fellinluv.mp3",
-            "https://dworkspace.vercel.app/assets/lamour.mp3",
-            "https://dworkspace.vercel.app/assets/headlines.mp3",
-            "https://dworkspace.vercel.app/assets/riplucki.mp3",
-            "https://dworkspace.vercel.app/assets/ninedrake.mp3",
-            "https://dworkspace.vercel.app/assets/sandman.mp3",
-            "https://dworkspace.vercel.app/assets/tsudrake.mp3",
-            "https://dworkspace.vercel.app/assets/youruineverything.mp3",
-            "https://dworkspace.vercel.app/assets/dreamsfairytalesfantasies.mp3",
-            "https://dworkspace.vercel.app/assets/rosary.mp3",
-            "https://dworkspace.vercel.app/assets/tuition.mp3",
-            "https://dworkspace.vercel.app/assets/tmudon.mp3",
-            "https://dworkspace.vercel.app/assets/kninedon.mp3",
-            "https://dworkspace.vercel.app/assets/nopole.mp3",
-            "https://dworkspace.vercel.app/assets/location.mp3",
-            "https://dworkspace.vercel.app/assets/burn.mp3",
-            "https://dworkspace.vercel.app/assets/wusyaname.mp3",
-            "https://dworkspace.vercel.app/assets/shetyler.mp3",
-            "https://dworkspace.vercel.app/assets/pinkwhite.mp3",
-            "https://dworkspace.vercel.app/assets/snooze.mp3",
-            "https://dworkspace.vercel.app/assets/openarms.mp3",
             "https://dworkspace.vercel.app/assets/saturn.mp3",
-            "https://dworkspace.vercel.app/assets/theresistance.mp3",
-            "https://dworkspace.vercel.app/assets/passionfruit.mp3",
-            "https://dworkspace.vercel.app/assets/olympian.mp3",
-            "https://dworkspace.vercel.app/assets/fromthestart.mp3",
-            "https://dworkspace.vercel.app/assets/gluesong.mp3",
-            "https://dworkspace.vercel.app/assets/acoldsunday.mp3",
-            "https://dworkspace.vercel.app/assets/oneofthosedays.mp3",
-            "https://dworkspace.vercel.app/assets/lvlasap.mp3",
-            "https://dworkspace.vercel.app/assets/niceforwhat.mp3",
-            "https://dworkspace.vercel.app/assets/catchakill.mp3",
-            "https://dworkspace.vercel.app/assets/iflookscouldkill.mp3",
-            "https://dworkspace.vercel.app/assets/telekinesis.mp3",
-            "https://dworkspace.vercel.app/assets/soeasytofallinlove.mp3",
-            "https://dworkspace.vercel.app/assets/rose.mp3",
-            "https://dworkspace.vercel.app/assets/thesilencebeneathmyskin.mp3",
-            "https://dworkspace.vercel.app/assets/throwit.mp3",
-            "https://dworkspace.vercel.app/assets/foreign.mp3",
-            "https://dworkspace.vercel.app/assets/solosteppincreteboy.mp3",
-            "https://dworkspace.vercel.app/assets/drewbarrymore.mp3",
-            "https://dworkspace.vercel.app/assets/nopeyourtoolateialreadydied.mp3",
-            "https://dworkspace.vercel.app/assets/wokeuplikethis.mp3",
-            "https://dworkspace.vercel.app/assets/shakeback.mp3",
-            "https://dworkspace.vercel.app/assets/pain.mp3",
-            "https://dworkspace.vercel.app/assets/2000excursion.mp3",
-            "https://dworkspace.vercel.app/assets/getnaked.mp3",
-            "https://dworkspace.vercel.app/assets/holymatrimony.mp3",
-            "https://dworkspace.vercel.app/assets/bipolar.mp3",
-            "https://dworkspace.vercel.app/assets/ikyourwaiting.mp3"
 
         ];
-        
-        const audio = document.getElementById('bg-music');
+           const audio = document.getElementById('bg-music');
         const volumeSlider = document.getElementById('volume-control');
         let currentSongIndex = Math.floor(Math.random() * songs.length);
 
@@ -408,15 +381,11 @@
         }
 
         const workData = {
-            "Banners": ["dubaibanner1", "dubaibanner2", "dubaibanner3", "dubaibanner4", "dubaibanner5", "dubaibanner6", "dubaibanner7", "dubaibanner8", "dubaibanner9", "dubaibanner10", "dubaibanner11", "dubaibanner12", "dubaibanner13", "dubaibanner14", "dubaibanner15", "dubaibanner16", "dubaibanner17", "dubaibanner18", "dubaibanner19", "dubaibanner20", "dubaibanner21", "dubaibanner22", "dubaibanner23", "dubaibanner24", "dubaibanner25", "dubaibanner26", "dubaibanner27", "dubaibanner28", "dubaibanner29", "dubaibanner30"],
-            "Generic Banners": ["dubaigeneric1", "dubaigeneric2", "dubaigeneric3", "dubaigeneric4", "dubaigeneric5", "dubaigeneric6", "dubaigeneric7", "dubaigeneric8", "dubaigeneric9", "dubaigeneric10"],
-            "Logos": ["dubailogo1", "dubailogo2", "dubailogo3", "dubailogo4", "dubailogo5", "dubailogo6"],
-            "Posters": ["dubaiposter1", "dubaiposter2", "dubaiposter3", "dubaiposter4", "dubaiposter5", "dubaiposter6", "dubaiposter7", "dubaiposter8", "dubaiposter9", "dubaiposter10", "dubaiposter11"],
-            "Clothing": ["dubaiclothing1", "dubaiclothing2", "dubaiclothing3", "dubaiclothing4", "dubaiclothing5", "dubaiclothing6", "dubaiclothing7", "dubaiclothing8", "dubaiclothing9"],
-            "Liveries": ["dubailiv1", "dubailiv2", "dubailiv3", "dubailiv4", "dubailiv5", "dubailiv6", "dubailiv7"],
-            "Photography": ["dubaiphoto1", "dubaiphoto2", "dubaiphoto3", "dubaiphoto4", "dubaiphoto5", "dubaiphoto6"]
+             "Banners": ["banner1", "banner2", "3", "4", "5", "7", "7", "8", "9", "10",],
+             "Generic Banners": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+             "Logos": ["1", "2", "3", "4", "5", "6"],
+             "Posters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
         };
-
         function openPortfolio() {
             const overlay = document.getElementById('portfolio-overlay');
             const container = document.getElementById('portfolio-container');
