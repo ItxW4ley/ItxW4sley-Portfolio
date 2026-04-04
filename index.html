@@ -28,7 +28,7 @@
         .enter-content { text-align: center; animation: pulse-glow 2.5s infinite ease-in-out; }
         .enter-text { font-size: 0.8rem; font-weight: 800; letter-spacing: 6px; color: #fff; text-transform: uppercase; text-shadow: 0 0 15px var(--accent); }
         @keyframes pulse-glow { 0%, 100% { opacity: 0.5; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
-        #main-content { opacity: 0; transition: opacity 1.5s ease; width: 100%; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+        #main-content { opacity: 0; transition: opacity 1.5s ease; width: 100%; display: flex; flex-direction: column; align-items: center; pointer-events: auto; }
         #main-content.visible { opacity: 1; pointer-events: auto; }
         #cursor { width: 20px; height: 20px; background: rgba(19, 52, 120, 0.4); border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 20000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
         #snow { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
