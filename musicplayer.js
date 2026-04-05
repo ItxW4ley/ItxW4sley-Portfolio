@@ -153,7 +153,7 @@
 
     const fullPlaylist = [
         { title: "Open Arms", artist: "SZA", slug: "openarms" },
-        { title: "Saturn", artist: "SZA", slug: "saturn" }
+        { title: "Saturn", artist: "SZA", slug: "saturn" },
     ];
 
     let currentIndex = Math.floor(Math.random() * fullPlaylist.length);
