@@ -3,74 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wasley</title>
-    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/1097689875056164995/ca3897f02e6e5b010e9aad8bb8fbf9ea.webp?size=160">
-    <meta property="og:description" content="Explore Wasley's portfolio—browse projects, place orders, and check current availability.">
+    <title>w</title>
+    <link rel="icon" type="image/png" href="https://itxw4sley-portfolio.vercel.app/assets\ItxW4sley.png">
+    <meta property="og:title" content="ixtw4sley.xyz">
+    <meta property="og:description" content="view wasley's portfolio, browse my work, order, view my availability — i love alysa liu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dworkspace.vercel.app">
+    <meta property="og:image" content="https://dworkspace.vercel.app/assets/dubaiprofbannerhahaha.png">
+    <meta name="theme-color" content="#FFB6C1">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
+        
         :root {
-            --accent: #6272a4;
+            --accent: #133478;
             --glass: rgba(255, 182, 193, 0.03);
-            --border: rgba(255, 182, 193, 0.15);
-            --pink-glow: rgba(70, 92, 219, 0.1);
+            --border: #133478;
+            --pink-glow: #133478;
             --online: #50fa7b;
             --idle: #f1fa8c;
             --dnd: #ff5555;
             --offline: #6272a4;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: none !important; }
-        body { background: #080808; color: #fff; min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; }
-        #enter-screen { position: fixed; inset: 0; background: #080808; z-index: 99999; display: flex; justify-content: center; align-items: center; transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        .enter-content { text-align: center; animation: pulse-glow 2.5s infinite ease-in-out; }
-        .enter-text { font-size: 0.8rem; font-weight: 800; letter-spacing: 6px; color: #fff; text-transform: uppercase; text-shadow: 0 0 15px var(--accent); }
-        @keyframes pulse-glow { 0%, 100% { opacity: 0.5; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
-        #main-content { opacity: 0; transition: opacity 1.5s ease; width: 100%; display: flex; flex-direction: column; align-items: center; pointer-events: none;    z-index: 10; /* add this line */}
-        #main-content.visible { opacity: 1; pointer-events: auto; }
-        #cursor { width: 20px; height: 20px; background: rgba(19, 52, 120, 0.4); border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 20000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
-        #snow { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
-        .discord-widget-container { width: 100%; max-width: 1100px; margin-bottom: 20px; z-index: 10; }
-        .discord-card { background: rgba(255, 182, 193, 0.05); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 24px; padding: 25px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--pink-glow); display: flex; align-items: center; gap: 20px; }
-        .discord-pfp-wrapper { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
-        .discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--border); }
-        .discord-status-dot { position: absolute; bottom: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%; border: 4px solid #0c0c0c; background: var(--offline); }
-        .discord-info h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
-        .discord-activity { font-size: 0.85rem; color: #aaa; line-height: 1.4; display: flex; align-items: center; }
-        .bento-grid { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto; gap: 20px; max-width: 1100px; width: 100%; }
-        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 24px; padding: 30px; display: flex; flex-direction: column; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: inset 0 0 15px rgba(255, 182, 193, 0.02); }
-        .card:hover, .discord-card:hover { border-color: var(--accent); background: rgba(255, 182, 193, 0.08); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255, 182, 193, 0.1); }
-        .profile { grid-column: span 2; grid-row: span 1; } .stack { grid-column: span 2; } .links { grid-column: span 1; } .status { grid-column: span 1; display: flex; flex-direction: column; justify-content: space-between; } .projects { grid-column: span 2; } .philosophy { grid-column: span 2; } .portfolio-card { grid-column: span 2; cursor: pointer !important; }
-        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tagline { color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 3px; font-weight: 700; margin-bottom: 10px; }
-        .bio { font-size: 0.95rem; line-height: 1.6; color: #aaa; margin-top: 15px; }
-        .tech-pill { display: inline-block; padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; font-size: 0.75rem; margin: 4px; color: #efefef; }
-        .link-item { display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.03); margin-bottom: 10px; font-size: 0.85rem; transition: 0.3s; }
-        .link-item:hover { background: var(--accent); color: #000; }
-        .status-container { display: flex; align-items: center; justify-content: center; padding: 15px; background: rgba(80, 250, 123, 0.05); border: 1px solid rgba(80, 250, 123, 0.2); border-radius: 15px; margin-top: auto; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(80, 250, 123, 0.2); } 70% { box-shadow: 0 0 0 10px rgba(80, 250, 123, 0); } 100% { box-shadow: 0 0 0 0px rgba(80, 250, 123, 0); } }
-        .status-dot { width: 8px; height: 8px; background: #50fa7b; border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 10px #50fa7b; }
-        .status-text { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: #50fa7b; text-transform: uppercase; }
-        .volume-container { width: 100%; max-width: 1100px; margin-top: 30px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; }
-        .volume-slider { -webkit-appearance: none; width: 250px; height: 3px; background: rgba(255, 182, 193, 0.15); border-radius: 5px; outline: none; transition: 0.3s; }
-        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: none; box-shadow: 0 0 15px var(--accent); border: 2px solid #080808; }
-        .volume-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 4px; color: var(--accent); font-weight: 800; opacity: 0.8; }
-        #portfolio-overlay { position: fixed; inset: 0; background: #080808; z-index: 10000; display: none; opacity: 0; overflow-y: auto; padding: 60px 20px; transition: opacity 0.8s ease; }
-        .portfolio-content { max-width: 1200px; margin: 0 auto; }
-        .portfolio-section { margin-bottom: 80px; opacity: 0; transform: translateY(30px); transition: 1s ease; }
-        .portfolio-section.visible { opacity: 1; transform: translateY(0); }
-        .section-title { font-size: 1.5rem; color: var(--accent); margin-bottom: 30px; border-left: 4px solid var(--accent); padding-left: 15px; text-transform: uppercase; letter-spacing: 2px; }
-        .image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .portfolio-img { width: 100%; border-radius: 15px; border: 1px solid var(--border); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer !important; }
-        .portfolio-img:hover { border-color: var(--accent); transform: scale(1.02); }
-        .close-portfolio { position: fixed; top: 30px; right: 30px; background: var(--accent); color: #000; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 800; z-index: 10001; cursor: pointer !important; }
-        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 30000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; }
-        #lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; box-shadow: 0 0 50px rgba(255, 182, 193, 0.2); transform: scale(0.8); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @media (max-width: 900px) { .bento-grid { grid-template-columns: 1fr; } .card { grid-column: span 1 !important; } body { overflow-y: auto; } }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: none !important;
+        }
+
+        body {
+            background: #080808;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        #enter-screen {
+            position: fixed;
+            inset: 0;
+            background: #080808;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .enter-content {
+            text-align: center;
+            animation: pulse-glow 2.5s infinite ease-in-out;
+        }
+
+        .enter-text {
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--accent);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        #main-content {
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        #main-content.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #cursor {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 182, 193, 0.4);
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 20000;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        #snow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .discord-widget-container {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        .discord-card {
+            background: rgba(255, 182, 193, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 25px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--pink-glow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .discord-pfp-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .discord-pfp {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+        }
+
+        .discord-status-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 4px solid #0c0c0c;
+            background: var(--offline);
+        }
+
+        .discord-info h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .discord-activity {
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+        }
+
+        .bento-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            gap: 20px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: inset 0 0 15px rgba(255, 182, 193, 0.02);
+        }
+
+        .card:hover, .discord-card:hover {
+            border-color: var(--accent);
+            background: rgba(255, 182, 193, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.1);
+        }
+
+        .profile { grid-column: span 2; grid-row: span 1; }
+        .stack { grid-column: span 2; }
+        .links { grid-column: span 1; }
+        .status { grid-column: span 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .projects { grid-column: span 2; }
+        .philosophy { grid-column: span 2; }
+        .portfolio-card { grid-column: span 2; cursor: pointer !important; }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .bio {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #aaa;
+            margin-top: 15px;
+        }
+
+        .tech-pill {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin: 4px;
+            color: #efefef;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .link-item:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .status-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(80, 250, 123, 0.05);
+            border: 1px solid rgba(80, 250, 123, 0.2);
+            border-radius: 15px;
+            margin-top: auto;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0px rgba(80, 250, 123, 0.2); }
+            70% { box-shadow: 0 0 0 10px rgba(80, 250, 123, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(80, 250, 123, 0); }
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #50fa7b;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #50fa7b;
+        }
+
+        .status-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #50fa7b;
+            text-transform: uppercase;
+        }
+
+        .volume-container {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 30px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 250px;
+            height: 3px;
+            background: rgba(255, 182, 193, 0.15);
+            border-radius: 5px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: none;
+            box-shadow: 0 0 15px var(--accent);
+            border: 2px solid #080808;
+        }
+
+        .volume-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            font-weight: 800;
+            opacity: 0.8;
+        }
+
+        #portfolio-overlay {
+            position: fixed;
+            inset: 0;
+            background: #080808;
+            z-index: 10000;
+            display: none;
+            opacity: 0;
+            overflow-y: auto;
+            padding: 60px 20px;
+            transition: opacity 0.8s ease;
+        }
+
+        .portfolio-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-section {
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1s ease;
+        }
+
+        .portfolio-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .portfolio-img {
+            width: 100%;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer !important;
+        }
+
+        .portfolio-img:hover {
+            border-color: var(--accent);
+            transform: scale(1.02);
+        }
+
+        .close-portfolio {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            z-index: 10001;
+            cursor: pointer !important;
+        }
+
+        #lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 30000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(255, 182, 193, 0.2);
+            transform: scale(0.8);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .card { grid-column: span 1 !important; }
+            body { overflow-y: auto; }
+        }
     </style>
-    <link rel="stylesheet" href="mobile.css">
+        <link rel="stylesheet" href="mobile.css">
 </head>
 <body oncontextmenu="return false;">
 
@@ -87,7 +462,7 @@
         <div class="discord-widget-container">
             <div class="discord-card" data-tilt>
                 <div class="discord-pfp-wrapper">
-                    <img id="discord-pfp" src="" class="discord-pfp" alt="Discord Avatar">
+                    <img id="discord-pfp" src="" class="discord-pfp" alt="">
                     <div id="discord-status" class="discord-status-dot"></div>
                 </div>
                 <div class="discord-info">
@@ -101,9 +476,9 @@
         <main class="bento-grid">
             <div class="card profile" data-tilt>
                 <div class="tagline">Developer & Designer</div>
-                <h1>ItxW4sley</h1>
+                <h1>wasley</h1>
                 <p class="bio">
-                    Designer, developer, and entrepreneur crafting digital experiences with a focus on aesthetics and efficiency. Currently building private workspaces and interactive web solutions. Year 11 Student
+                    Designer, developer, and entrepreneur crafting digital experiences with a focus on aesthetics and efficiency. Currently building private workspaces and interactive web solutions.
                 </p>
             </div>
 
@@ -132,16 +507,14 @@
                     <span class="tech-pill">Spotify</span>
                     <span class="tech-pill">Vercel</span>
                     <span class="tech-pill">Visual Studio Code</span>
-                    <span class="tech-pill">PHP</span>
-                    <span class="tech-pill">Jetbrains Rider</span>
                 </div>
             </div>
 
             <div class="card links" data-tilt>
                 <div class="tagline">Connect</div>
                 <div style="margin-top: 15px;">
-                    <a href="https://discord.gg/ntT6dETHN5" class="link-item">Techura <span>→</span></a>
-                    <a href="https://discord.com/users/1097689875056164995" class="link-item">Discord <span>→</span></a>
+                    <a href="https://discord.gg/P9wjyGFwFF" class="link-item">Commissions <span>→</span></a>
+                    <a href="https://discord.com/users/780580976500670494" class="link-item">Discord <span>→</span></a>
                 </div>
             </div>
 
@@ -154,18 +527,11 @@
             </div>
 
             <div class="card projects" data-tilt>
-                <div class="tagline">Recent Proajects</div>
+                <div class="tagline">Recent Projects</div>
                 <h2 style="margin-top: 10px; font-size: 1.2rem;">techurasolutions.xyz</h2>
+                <p class="bio" style="font-size: 0.8rem;">
                 <p class="bio" style="font-size: 0.8rem;"><strong>Techura Solutions Pty Ltd</strong>  is a global leader in cloud, IT, and enterprise infrastructure solutions, delivering innovative technology and operational excellence to empower businesses worldwide. With a presence in Perth, Sydney, Dubai, Japan, United States , Singapore and Thailand, we provide seamless support, scalable infrastructure, and secure digital transformation services.</p>
-                
-
-    <h2 style="margin-top: 12px; font-size: 1.2rem;">EvaluatingERLC</h2>
-    <p class="bio" style="font-size: 0.8rem;">
-        <strong>EvaluatingERLC</strong> is a server that evaluates ERLC communities and rates them on a scale of 0–50. This community was founded by... <strong>ItxW4sley</strong>, we strive for a safe and secure community</p> 
-       
-    </p>
-</div>
-
+            </div>
 
             <div class="card philosophy" data-tilt>
                 <div class="tagline">Mindset</div>
@@ -174,20 +540,19 @@
                 </p>
             </div>
 
-            <div class="card portfolio-card">
+            <div class="card portfolio-card" data-tilt onclick="openPortfolio()">
                 <div class="tagline">Works</div>
                 <h2 style="font-size: 1.8rem; font-weight: 800; color: #fff;">PORTFOLIO</h2>
-                <p class="bio" style="font-size: 0.85rem;">View the work of Wasley, in various fields.</p>
+                <p class="bio" style="font-size: 0.85rem;">View the work of <strong>itxW4sley</strong>, in various fields.</p>
             </div>
         </main>
 
-        <!-- 
-        <div class="volume-container">
+        <!-- <div class="volume-container">
             <span class="volume-label">Configure Volume</span>
             <input type="range" class="volume-slider" id="volume-control" min="0" max="1" step="0.01" value="0.5">
         </div>
     </div> -->
-<!-- 
+
     <div id="portfolio-overlay">
         <button class="close-portfolio" onclick="closePortfolio()">BACK</button>
         <div class="portfolio-content" id="portfolio-container"></div>
@@ -195,12 +560,13 @@
 
     <div id="lightbox" onclick="closeLightbox()">
         <img id="lightbox-img" src="" alt="Enlarged">
-    </div> -->
-  
-    
+    </div>
+
+    <audio id="bg-music" loop></audio>
+
     <script>
         const DISCORD_ID = "1097689875056164995";
-        const titleText = "ItxW4sley 🥂";
+        const titleText = "wasley 🥂";
         let titleIndex = 0;
         let isTitleAdding = true;
 
@@ -227,7 +593,7 @@
                 }
             }
             
-            document.title = current || "wasley";
+            document.title = current || "w";
         }
 
         setInterval(animateTitle, 500);
@@ -302,7 +668,8 @@
         document.addEventListener('mouseup', () => crsr.style.transform = 'translate(-50%, -50%) scale(1)');
 
         const songs = [
-            "https://dworkspace.vercel.app/assets/ikyourwaiting.mp3"
+
+      
 
         ];
         
@@ -360,11 +727,11 @@
         }
 
         const workData = {
-            "Banners": ["1", "2", "3", "4", "5"],
-            "Generic Banners": ["1", "2", "3", "4", "5"],
-            "Logos": ["1", "2", "3", "4", "5", "6"],
-            "Posters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-           
+            "Banners": ["banner1", "banner2", "banner3"],
+            "Generic Banners": ["wasleygeneric1", "wasleygeneric2", "Australia Roleplay_Banner1","Port (1)"],
+            "Logos": ["AussieRP_LOGO1", "SydneyRoleplayLogo", "TechuraSolutions", "AusRP", "JRTT", "wasleylogo5"],
+            "Posters": ["wasleyposter1_dubai", "wasleyposter2_aus", "wasleyposter3_sydney"],
+            "Photography": ["Photo1", "Photo2", "photo3", "photo4", "photo5", "photo6", "photo7"]
         };
 
         function openPortfolio() {
@@ -427,5 +794,6 @@
     <script src="softwareUsed.js"></script>
     <script src="mindset.js"></script>
     <script src="contactbutton.js"></script>
+    <script src="musicplayer.js"></script>
 </body>
 </html>
