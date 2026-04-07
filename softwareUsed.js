@@ -101,7 +101,7 @@
     const rows = [
         { speed: '8s', reverse: false, items: ["Visual Studio Code", "JavaScript", "React", "Node.js", "GitHub"] },
         { speed: '10s', reverse: true,  items: ["Photoshop", "Illustrator", "After Effects", "Premiere Pro", "Figma"] },
-        { speed: '12s', reverse: false, items: ["MongoDB", "Vercel", "HTML5", "CSS3", "Spotify", "Postman"] }
+        { speed: '12s', reverse: false, items: ["MongoDB", "Vercel", "HTML5", "CSS3", "Spotify", "Postman", "JetBrains Rider"] }
     ];
 
     function initMarquee() {
